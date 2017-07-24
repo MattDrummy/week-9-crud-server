@@ -4,7 +4,7 @@
   "description": "the server side application for our week 9 crud application",
   "main": "app.js",
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,13 +20,6 @@
   "dependencies": {
     "express": "^4.15.3",
     "knex": "^0.13.0",
-    "pg": "^7.0.2",
-    "body-parser": "~1.17.1",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.6.3",
-    "express": "~4.15.2",
-    "morgan": "~1.8.1",
-    "pug": "~2.0.0-beta11",
-    "serve-favicon": "~2.4.2"
+    "pg": "^7.0.2"
   }
 }
