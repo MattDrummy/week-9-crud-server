@@ -5,6 +5,6 @@ module.exports = {
     return knex('game');
   },
   getOneGame: (id) => {
-    return knex('game').where('id', id).first();
+    return knex('game').where('id', id);
   }
 }
