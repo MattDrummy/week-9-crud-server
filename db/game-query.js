@@ -4,7 +4,7 @@ module.exports = {
   getGames: () => {
     return knex('game');
   },
-  getOneGame: (id) => {
-    return knex('game').where('id', id);
+  getOneGame: (name) => {
+    return knex('game').where('name', name);
   }
 }
