@@ -6,5 +6,14 @@ module.exports = {
   },
   getOneGame: (id) => {
     return knex('game').where('id', id);
+  },
+  postGame: (game) => {
+    return knex('game').insert(game).returning('*');
+  },
+  updateGame: (game) => {
+
+  },
+  deleteGame: (id) => {
+
   }
 }
