@@ -1,46 +1,52 @@
 const express = require('express');
 const router = express.Router();
 const queries = require('../db/game-query.js')
+const validation = require('./validation.js')
+
 
 router.get('/', (req, res) => {
   queries.getGames().then((games) => {
     let result = games;
-    if (req.query !== {}) {
-      let keys = Object.keys(req.query)
-      keys.forEach((key) => {
-        result = result.filter((element) => {
-          if (key === 'year') {
-            return element[key] == req.query[key];
-          } else {
-            return (element[key]).toLowerCase().includes(req.query[key].toLowerCase());
-          }
-        })
+    let keys = Object.keys(req.query)
+    keys.forEach((key) => {
+      result = result.filter((element) => {
+        let sum = '';
+        for (var variable in element) {
+          sum += `${element[variable]}`;
+        }
+        return (sum).toLowerCase().includes(req.query[key].toLowerCase());
       })
-    }
+    })
     res.json(result);
   })
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validation.validId, (req, res) => {
   queries.getOneGame(req.params.id).then((game) => {
     res.json(game);
   })
 })
 
-router.post('/', (req, res) => {
+router.post('/', validation.validGame, (req, res) => {
   queries.postGame(req.body).then((game) => {
     res.json(game);
   });
 })
 
-router.put('/:id', (req, res) => {
-  queries.updateGame(req.params.id).then((game) => {
+router.put('/:id', validation.validId, validation.validUpdate, (req, res) => {
+  queries.updateGame(req.body, req.params.id).then((game) => {
     res.json(game);
   })
 })
 
-router.delete('/:id', (req, res) => {
-
-  res.send('Success');
+router.delete('/:id', validation.validId, (req, res) => {
+  queries.getOneGame(req.params.id).then((game) => {
+    queries.deleteGame(req.params.id).then((data) => {
+      let result = {};
+      Object.assign(result, game);
+      result[0].deleted = true;
+      res.json(result);
+    })
+  })
 })
 module.exports = router;

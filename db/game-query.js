@@ -10,10 +10,16 @@ module.exports = {
   postGame: (game) => {
     return knex('game').insert(game).returning('*');
   },
-  updateGame: (game) => {
-
+  updateGame: (game, id) => {
+    let obj = {
+      name: game.name,
+      year: game.year,
+      developer: game.developer,
+      directors: game.directors
+    }
+    return knex('game').where('id', id).update(obj).returning('*')
   },
   deleteGame: (id) => {
-
+    return knex('game').where('id', id).del()
   }
 }
