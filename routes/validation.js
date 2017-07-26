@@ -1,7 +1,7 @@
 module.exports = {
   validGame: (req, res, next) => {
     let validName = typeof req.query.name === 'string' && game.name.trim() !== '';
-    let validYear = typeof (req.query.year + 1) === 'number';
+    let validYear = !isNaN(req.query.year);
     let validDeveloper = typeof req.query.developer === 'string' && game.developer.trim() !== '';
     let validDirectors = typeof req.query.directors === 'string' && game.directors.trim() !== '';
     if (validName && validYear && validDeveloper && validDirectors){
@@ -24,7 +24,7 @@ module.exports = {
       result = typeof req.query.name === 'string' && game.name.trim() !== '';
     }
     if (req.body.year) {
-      result = typeof (req.query.year + 1) === 'number';
+      result = !isNaN(req.query.year);
     }
     if (req.body.developer) {
       result = typeof req.query.developer === 'string' && game.developer.trim() !== '';
