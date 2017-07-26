@@ -1,9 +1,9 @@
 module.exports = {
   validGame: (req, res, next) => {
-    let validName = typeof req.query.name === 'string' && game.name.trim() !== '';
-    let validYear = !isNaN(req.query.year);
-    let validDeveloper = typeof req.query.developer === 'string' && game.developer.trim() !== '';
-    let validDirectors = typeof req.query.directors === 'string' && game.directors.trim() !== '';
+    let validName = typeof req.body.name === 'string' && req.body.name.trim() !== '';
+    let validYear = !isNaN(req.body.year);
+    let validDeveloper = typeof req.body.developer === 'string' && req.body.developer.trim() !== '';
+    let validDirectors = typeof req.body.directors === 'string' && req.body.directors.trim() !== '';
     if (validName && validYear && validDeveloper && validDirectors){
       return next();
     } else {
@@ -21,16 +21,22 @@ module.exports = {
   validUpdate: (req, res, next) => {
     var result = true;
     if (req.body.name) {
-      result = typeof req.query.name === 'string' && game.name.trim() !== '';
+      result = typeof req.body.name === 'string' && req.body.name.trim() !== '';
     }
     if (req.body.year) {
-      result = !isNaN(req.query.year);
+      result = !isNaN(req.body.year);
     }
     if (req.body.developer) {
-      result = typeof req.query.developer === 'string' && game.developer.trim() !== '';
+      result = typeof req.body.developer === 'string' && req.body.developer.trim() !== '';
     }
     if (req.body.directors) {
-      result = typeof req.query.directors === 'string' && game.directors.trim() !== '';
+      result = typeof req.body.directors === 'string' && req.body.directors.trim() !== '';
+    }
+    if (result){
+      return next()
+    } else {
+      res.json({message: 'Invalid Update parameters'})
+
     }
   }
 }
