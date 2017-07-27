@@ -3,7 +3,7 @@ const validateKnex = require('../db/knex.js');
 module.exports = {
   validPost: (req, res, next) => {
     let validName = typeof req.body.name === 'string' && req.body.name.trim() !== '';
-    let validYear = typeof req.body.year === 'number';
+    let validYear = !isNaN(req.body.year);
     let validDeveloper = typeof req.body.developer === 'string' && req.body.developer.trim() !== '';
     let validDirectors = typeof req.body.directors === 'string' && req.body.directors.trim() !== '';
     validateKnex('game').then((data)=>{
