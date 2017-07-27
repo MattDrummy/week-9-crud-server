@@ -27,7 +27,7 @@ router.get('/:id', validation.validId, (req, res) => {
   })
 })
 
-router.post('/', validation.validGame, (req, res) => {
+router.post('/', validation.validPost, (req, res) => {
   queries.postGame(req.body).then((game) => {
     res.json(game);
   });

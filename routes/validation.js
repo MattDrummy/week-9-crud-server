@@ -1,18 +1,35 @@
+const validateKnex = require('../db/knex.js');
+
 module.exports = {
-  validGame: (req, res, next) => {
+  validPost: (req, res, next) => {
     let validName = typeof req.body.name === 'string' && req.body.name.trim() !== '';
-    let validYear = !isNaN(req.body.year);
+    let validYear = typeof req.body.year === 'number';
     let validDeveloper = typeof req.body.developer === 'string' && req.body.developer.trim() !== '';
     let validDirectors = typeof req.body.directors === 'string' && req.body.directors.trim() !== '';
-    if (validName && validYear && validDeveloper && validDirectors){
-      return next();
-    } else {
-      res.json({message: 'Invalid Game'})
-    }
+    validateKnex('game').then((data)=>{
+      let validNewPost = true;
+      data.forEach((e)=>{
+        if (req.body.name.toLowerCase() === e.name.toLowerCase()) {
+          validNewPost = false;
+        }
+      })
+      if (!validNewPost) {
+        res.json({message: 'Duplicate Game'})
+        return;
+      }
+      if (validName && validYear && validDeveloper && validDirectors){
+        console.log("next");
+        return next();
+      } else {
+        res.json({message: 'Invalid Input'})
+        return;
+      }
+    })
+
   },
   validId: (req, res, next) => {
     let id = req.params.id;
-    if (!isNaN(id)) {
+    if (!isNaN(id) && id >= 0) {
       return next();
     } else {
       res.json({message: 'Invalid ID parameter'})
